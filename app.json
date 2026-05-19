@@ -35,16 +35,17 @@
             "imageWidth": 76
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
-"runtimeVersion": {
-"policy": "appVersion"
-},    
-"extra": {
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "extra": {
       "router": {},
       "eas": {
         "projectId": "f9f24074-cab0-4a63-9bed-5260f56c5660"
