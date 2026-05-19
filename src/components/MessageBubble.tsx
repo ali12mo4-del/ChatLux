@@ -1,46 +1,48 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { COLORS, FONTS, RADIUS } from '../constants/theme';
-import { Message } from '../hooks/useChat';
-type Props = { item: Message };
-function parseMessage(text: string) {
-  return text.split(/(```[\s\S]*?```)/g).map((part, i) => {
-    if (part.startsWith('```')) return { type: 'code', content: part.replace(/```\w*\n?/, '').replace(/```$/, ''), key: i };
-    return { type: 'text', content: part, key: i };
-  });
+import { View, Text, StyleSheet, Image } from 'react-native';
+
+interface Props {
+  item: {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+  };
 }
+
 export default function MessageBubble({ item }: Props) {
-  const isUser = item.sender === 'user';
-  const parts = parseMessage(item.text);
+  const isUser = item.role === 'user';
+
   return (
     <View style={[styles.row, isUser ? styles.rowUser : styles.rowBot]}>
-      {!isUser && <View style={styles.botAvatar}><Text style={styles.botAvatarText}>CL</Text></View>}
-      <View style={styles.bubbleWrapper}>
-        <View style={[styles.bubble, isUser ? styles.userBubble : styles.botBubble]}>
-          {parts.map(part => part.type === 'code'
-            ? <ScrollView key={part.key} horizontal style={styles.codeBox}><Text style={styles.codeText}>{part.content.trim()}</Text></ScrollView>
-            : <Text key={part.key} style={[styles.text, isUser && styles.textUser]}>{part.content}</Text>
-          )}
+      {!isUser && (
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>🤖</Text>
         </View>
-        <Text style={[styles.time, isUser && styles.timeUser]}>{item.time}</Text>
+      )}
+      <View style={[styles.bubble, isUser ? styles.userBubble : styles.botBubble]}>
+        <Text style={[styles.text, isUser ? styles.userText : styles.botText]}>
+          {item.content}
+        </Text>
       </View>
+      {isUser && (
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>👤</Text>
+        </View>
+      )}
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', marginBottom: 14, alignItems: 'flex-end' },
+  row: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 12 },
   rowUser: { justifyContent: 'flex-end' },
   rowBot: { justifyContent: 'flex-start' },
-  botAvatar: { width: 30, height: 30, borderRadius: 10, backgroundColor: COLORS.primary, justifyContent: 'center', alignItems: 'center', marginRight: 8, marginBottom: 16 },
-  botAvatarText: { color: '#fff', fontSize: 11, fontWeight: 'bold' },
-  bubbleWrapper: { maxWidth: '78%' },
-  bubble: { borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10 },
-  userBubble: { backgroundColor: COLORS.userBubble, borderBottomRightRadius: 4 },
-  botBubble: { backgroundColor: COLORS.botBubble, borderWidth: 1, borderColor: COLORS.border, borderBottomLeftRadius: 4 },
-  text: { color: COLORS.textDim, fontSize: FONTS.md, lineHeight: 22 },
-  textUser: { color: '#fff' },
-  time: { color: COLORS.textMuted, fontSize: 10, marginTop: 4, paddingLeft: 4 },
-  timeUser: { textAlign: 'right', paddingRight: 4 },
-  codeBox: { backgroundColor: COLORS.code, borderRadius: 10, padding: 10, marginVertical: 4 },
-  codeText: { color: COLORS.codeText, fontFamily: 'monospace', fontSize: 12, lineHeight: 18 },
+  avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#1a2035', justifyContent: 'center', alignItems: 'center', marginHorizontal: 6 },
+  avatarText: { fontSize: 16 },
+  bubble: { maxWidth: '75%', padding: 12, borderRadius: 16 },
+  userBubble: { backgroundColor: '#4fc3f7', borderBottomRightRadius: 4 },
+  botBubble: { backgroundColor: '#1a2035', borderBottomLeftRadius: 4 },
+  text: { fontSize: 15, lineHeight: 22 },
+  userText: { color: '#000' },
+  botText: { color: '#fff' },
 });

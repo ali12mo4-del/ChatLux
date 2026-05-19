@@ -1,24 +1,39 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { COLORS, FONTS, RADIUS } from '../constants/theme';
-type Props = { value: string; onChange: (t: string) => void; onSend: () => void; loading: boolean };
+import { View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+interface Props {
+  value: string;
+  onChange: (text: string) => void;
+  onSend: () => void;
+  loading: boolean;
+}
+
 export default function InputBar({ value, onChange, onSend, loading }: Props) {
   return (
     <View style={styles.container}>
-      <View style={styles.inputWrapper}>
-        <TextInput style={styles.input} value={value} onChangeText={onChange} placeholder="اكتب رسالتك..." placeholderTextColor={COLORS.textMuted} multiline maxLength={1000} onSubmitEditing={onSend} />
-      </View>
-      <TouchableOpacity style={[styles.btn, (!value.trim() || loading) && styles.btnDisabled]} onPress={onSend} disabled={!value.trim() || loading} activeOpacity={0.8}>
-        <Text style={styles.btnIcon}>{loading ? '...' : '>'}</Text>
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChange}
+        placeholder="اكتب رسالتك..."
+        placeholderTextColor="#555"
+        multiline
+        maxLength={1000}
+      />
+      <TouchableOpacity style={[styles.btn, loading && styles.btnDisabled]} onPress={onSend} disabled={loading}>
+        {loading
+          ? <ActivityIndicator color="#fff" size="small" />
+          : <Ionicons name="send" size={20} color="#fff" />
+        }
       </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 12, paddingVertical: 10, paddingBottom: 20, backgroundColor: COLORS.surface, borderTopWidth: 1, borderTopColor: COLORS.border, gap: 10 },
-  inputWrapper: { flex: 1, backgroundColor: COLORS.surfaceAlt, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.border, paddingHorizontal: 14, paddingVertical: 10, minHeight: 48, maxHeight: 130, justifyContent: 'center' },
-  input: { color: COLORS.text, fontSize: FONTS.md, lineHeight: 22 },
-  btn: { width: 50, height: 50, borderRadius: 14, backgroundColor: COLORS.primary, justifyContent: 'center', alignItems: 'center' },
-  btnDisabled: { backgroundColor: COLORS.surfaceAlt },
-  btnIcon: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
+  container: { flexDirection: 'row', alignItems: 'flex-end', padding: 12, backgroundColor: '#0d1426', borderTopWidth: 1, borderTopColor: '#1a2035', gap: 8 },
+  input: { flex: 1, backgroundColor: '#1a2035', color: '#fff', padding: 12, borderRadius: 20, fontSize: 15, maxHeight: 120, textAlign: 'right' },
+  btn: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#4fc3f7', justifyContent: 'center', alignItems: 'center' },
+  btnDisabled: { backgroundColor: '#1a2035' },
 });

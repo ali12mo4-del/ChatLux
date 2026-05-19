@@ -1,32 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS, FONTS } from '../constants/theme';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { auth } from '../config/firebase';
+import { signOut } from 'firebase/auth';
+
 export default function Header() {
   return (
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <View style={styles.avatar}><Text style={styles.avatarText}>CL</Text></View>
-        <View style={styles.onlineDot} />
+      <View style={styles.left}>
+        <Text style={styles.logo}>✨</Text>
+        <Text style={styles.title}>ChatLux</Text>
       </View>
-      <View style={styles.info}>
-        <Text style={styles.name}>ChatLux</Text>
-        <View style={styles.statusRow}>
-          <View style={styles.statusDot} />
-          <Text style={styles.status}>Online · AI by Ali</Text>
-        </View>
+      <View style={styles.right}>
+        <Text style={styles.email}>{auth.currentUser?.email?.split('@')[0]}</Text>
+        <TouchableOpacity onPress={() => signOut(auth)}>
+          <Text style={styles.logout}>خروج</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18, paddingVertical: 14, backgroundColor: COLORS.surface, borderBottomWidth: 1, borderBottomColor: COLORS.border },
-  avatarContainer: { position: 'relative', marginRight: 12 },
-  avatar: { width: 44, height: 44, borderRadius: 14, backgroundColor: COLORS.primary, justifyContent: 'center', alignItems: 'center' },
-  avatarText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  onlineDot: { position: 'absolute', bottom: -1, right: -1, width: 12, height: 12, borderRadius: 6, backgroundColor: COLORS.online, borderWidth: 2, borderColor: COLORS.surface },
-  info: { flex: 1 },
-  name: { color: COLORS.text, fontSize: FONTS.lg, fontWeight: '700' },
-  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 2 },
-  statusDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: COLORS.online, marginRight: 5 },
-  status: { color: COLORS.textDim, fontSize: FONTS.sm },
+  container: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0d1426', padding: 16, paddingTop: 48, borderBottomWidth: 1, borderBottomColor: '#1a2035' },
+  left: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  logo: { fontSize: 24 },
+  title: { fontSize: 22, color: '#4fc3f7', fontWeight: 'bold' },
+  right: { alignItems: 'flex-end' },
+  email: { color: '#888', fontSize: 12, marginBottom: 4 },
+  logout: { color: '#ff5555', fontSize: 14 },
 });
