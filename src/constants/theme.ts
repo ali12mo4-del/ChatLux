@@ -14,18 +14,5 @@ export const COLORS = {
   codeText: '#38bdf8',
   online: '#22c55e',
 };
-
-export const FONTS = {
-  sm: 13,
-  md: 15,
-  lg: 17,
-  xl: 22,
-  xxl: 28,
-};
-
-export const RADIUS = {
-  sm: 10,
-  md: 18,
-  lg: 24,
-  full: 999,
-};
+export const FONTS = { sm: 13, md: 15, lg: 17, xl: 22, xxl: 28 };
+export const RADIUS = { sm: 10, md: 18, lg: 24, full: 999 };
