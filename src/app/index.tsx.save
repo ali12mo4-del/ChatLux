@@ -1,0 +1,61 @@
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+
+const API_KEY = 'AIzaSyDZpVsNFqepV4KcpHFmWgl4jkSohy-X680';
+
+export default function HomeScreen() {
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([
+    { id: '1', text: 'Welcome', isBot: true },
+  ]);
+
+  const sendMessage = async () => {
+    if (message.trim() === '') return;
+    const userMessage = message;
+    setMessage('');
+    setMessages(prev => [...prev, { id: Math.random().toString(), text: userMessage, isBot: false }]);
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+        { method: 'POST', headers:      const data = await response.json();
+      const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'مفيش رد';
+      setMessages(prev => [...prev, { id: Math.random().toString(), text: botReply, isBot: true }]);
+    } catch (error) {
+      setMessages(prev => [...prev, { id: Math.random().toString(), text: 'حصل خطأ', isBot: true }]);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>ChatLux</Text>
+      <FlatList
+        data={messages}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={[styles.messageBox, item.isBot ? styles.botMessage : styles.userMessage]}>
+            <Text style={styles.messageText}>{item.text}</Text>
+          </View>
+        )}
+      />
+      <View style={styles.inputContainer}>
+        <TextInput placeholder="Type a message..." placeholderTextColor="#777" style={styles.input} value={message} onChangeText={setMessage} />
+        <TouchableOpacity style={styles.button} onPress={sendMessage}>
+          <Text style={styles.buttonText}>Send</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#0f0f0f', paddingTop: 60, paddingHorizontal: 15 },
+  header: { color: 'white', fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
+  messageBox: { padding: 12, borderRadius: 12, marginBottom: 10, maxWidth: '80%' },
+  botMessage: { backgroundColor: '#1e1e1e', alignSelf: 'flex-start' },
+  userMessage: { backgroundColor: '#3b82f6', alignSelf: 'flex-end' },
+  messageText: { color: 'white', fontSize: 16 },
+  inputContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20, marginTop: 10 },
+  input: { flex: 1, backgroundColor: '#1e1e1e', color: 'white', borderRadius: 12, paddingHorizontal: 15, height: 50, marginRight: 10 },
+  button: { backgroundColor: '#3b82f6', paddingHorizontal: 20, height: 50, borderRadius: 12, justifyContent: 'center' },
+  buttonText: { color: 'white', fontWeight: 'bold' },
+});
