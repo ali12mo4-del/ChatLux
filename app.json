@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ali12.mo4.ChatLux"
     },
     "web": {
       "output": "static",
@@ -39,6 +40,15 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+"runtimeVersion": {
+"policy": "appVersion"
+},    
+"extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f9f24074-cab0-4a63-9bed-5260f56c5660"
+      }
     }
   }
 }
