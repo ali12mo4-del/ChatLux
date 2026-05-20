@@ -1,17 +1,28 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import VoiceButton from './VoiceButton';
 
 interface Props {
   value: string;
   onChange: (text: string) => void;
   onSend: () => void;
   loading: boolean;
+  isListening?: boolean;
+  isSpeaking?: boolean;
+  onVoicePress?: () => void;
 }
 
-export default function InputBar({ value, onChange, onSend, loading }: Props) {
+export default function InputBar({ value, onChange, onSend, loading, isListening = false, isSpeaking = false, onVoicePress }: Props) {
   return (
     <View style={styles.container}>
+      {onVoicePress && (
+        <VoiceButton
+          isListening={isListening}
+          isSpeaking={isSpeaking}
+          onPress={onVoicePress}
+        />
+      )}
       <TextInput
         style={styles.input}
         value={value}
