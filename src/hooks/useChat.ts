@@ -59,12 +59,21 @@ export function useChat(chatId?: string) {
       const memory = await loadMemory();
       const memoryPrompt = buildMemoryPrompt(memory);
 
-      const response = await fetch('https://chat-lux-2--ali12mo4.replit.app/chat', {
+      const systemPrompt = `انت مساعد ذكاء اصطناعي اسمك ChatLux. صنعك Ali Mohammed. تكلم دايما بالعربي أو الانجليزي فقط. ممنوع أي لغة تانية.${memoryPrompt}`;
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + process.env.EXPO_PUBLIC_GROQ_API_KEY,
+        },
         body: JSON.stringify({
-          messages: newMessages.map(m => ({ role: m.role, content: m.content })),
-          systemExtra: memoryPrompt,
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            ...newMessages.map(m => ({ role: m.role, content: m.content })),
+          ],
+          max_tokens: 500,
         }),
       });
 
@@ -72,7 +81,7 @@ export function useChat(chatId?: string) {
       const assistantMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.reply || 'حدث خطأ',
+        content: data.choices?.[0]?.message?.content || 'حدث خطأ',
       };
 
       const finalMessages = [...newMessages, assistantMsg];
