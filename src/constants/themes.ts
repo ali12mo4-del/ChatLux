@@ -63,3 +63,14 @@ export const THEMES: Theme[] = [
 ];
 
 export const DEFAULT_THEME = THEMES[0];
+
+export const LIGHT_THEME = {
+  id: 'light',
+  name: 'فاتح',
+  emoji: '☀️',
+  bg: '#f5f5f5',
+  surface: '#ffffff',
+  primary: '#1976d2',
+  text: '#000000',
+  subtext: '#666666',
+};
