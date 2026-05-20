@@ -59,7 +59,7 @@ export function useChat(chatId?: string) {
       const memory = await loadMemory();
       const memoryPrompt = buildMemoryPrompt(memory);
 
-      const response = await fetch('https://unconditional-drop-overload.up.railway.app/chat', {
+      const response = await fetch('https://chat-lux-2--ali12mo4.replit.app/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
