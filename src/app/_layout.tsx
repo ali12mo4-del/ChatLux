@@ -7,14 +7,23 @@ import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import AppTabs from '@/components/app-tabs';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
+    const checkWelcome = async () => {
+      const seen = await AsyncStorage.getItem('welcome_seen');
+      if (!seen) setShowWelcome(true);
+    };
+    checkWelcome();
+
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoading(false);
@@ -22,11 +31,18 @@ export default function TabLayout() {
     return unsub;
   }, []);
 
+  const handleWelcomeStart = async () => {
+    await AsyncStorage.setItem('welcome_seen', 'true');
+    setShowWelcome(false);
+  };
+
   if (loading) return (
     <View style={{ flex: 1, backgroundColor: '#0a0f1e', justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator color="#4fc3f7" size="large" />
     </View>
   );
+
+  if (showWelcome) return <WelcomeScreen onStart={handleWelcomeStart} />;
 
   if (!user) {
     if (showRegister) return <RegisterScreen navigation={{ navigate: () => setShowRegister(false) }} />;
