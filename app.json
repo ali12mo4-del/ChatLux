@@ -6,51 +6,33 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "chatlux",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0f1e"
+    },
     "ios": {
-      "icon": "./assets/expo.icon"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ali12.mo4.ChatLux"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#0a0f1e"
       },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.ali12.mo4.ChatLux"
-    },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "package": "com.ali12.mo4.ChatLux",
+      "permissions": [
+        "RECORD_AUDIO",
+        "INTERNET"
+      ]
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#208AEF",
-          "android": {
-            "image": "./assets/images/splash-icon.png",
-            "imageWidth": 76
-          }
-        }
-      ],
-      "expo-font",
       "expo-sharing"
     ],
     "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "f9f24074-cab0-4a63-9bed-5260f56c5660"
-      }
+      "typedRoutes": true
     }
   }
 }
