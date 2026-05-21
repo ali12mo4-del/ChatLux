@@ -1,3 +1,4 @@
+import { GROQ_API_KEY } from '../config/apiKeys';
 import { useState, useRef, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../config/firebase';
@@ -65,7 +66,7 @@ export function useChat(chatId?: string) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + require('../config/apiKeys').GROQ_API_KEY,
+          'Authorization': 'Bearer ' + GROQ_API_KEY,
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',

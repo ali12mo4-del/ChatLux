@@ -38,7 +38,7 @@ export default function App() {
       setMood('victory');
       setTimeout(() => setMood('idle'), 1500);
       if (messages[messages.length - 1]?.role === 'assistant') {
-        speak(messages[messages.length - 1].content.substring(0, 100));
+        
       }
       autoBackup();
     }
